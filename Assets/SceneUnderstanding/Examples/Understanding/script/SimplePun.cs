@@ -10,6 +10,8 @@ using Microsoft.MixedReality.SceneUnderstanding;
 public class SimplePun : MonoBehaviourPunCallbacks {
 
     private String playerName;
+    private int TotalArea;
+    [SerializeField] private GameObject parentObject;
     public GameObject stateManager;
     int playerNum;
     bool isStart = false;
@@ -56,7 +58,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
         playerName = CanasController.getPlayerName();
         CountDownText = GameObject.Find("CountDwon").GetComponent<TextMeshPro>();
         SceneUnderstanding = GameObject.Find("SceneUnderstandingManager");
-        scoreText= scoreDisplay.GetComponent<TextMeshPro>();
+        scoreText = scoreDisplay.GetComponent<TextMeshPro>();
         calscore = scoreDisplay.GetComponent<CalScore>();
         dustHander = DustSensor.GetComponent<DustHander>();
         socreGauge = gauge.GetComponent<ScoreGauge>();
@@ -74,6 +76,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
               
               if(CountDown <= 0f){
                   SceneUnderstanding.GetComponent<SceneUnderstandingManager>().DisplayScanPlanes = true;
+                  TotalArea = GetAllArea();
                   isStart = false;
                   isStarted = true;
                   scoreText.text = "Stage" + stageNum.ToString("F2");
@@ -168,6 +171,20 @@ public class SimplePun : MonoBehaviourPunCallbacks {
         else{
             return false;
         }
+    }
+
+    public int GetAllArea(){
+        int allArea = 0;
+        int highScore = 0;
+        foreach (Transform childTransform in parentObject.transform)
+        {
+            if(childTransform.gameObject.name=="Floor"){
+            GameObject grandchild = childTransform.transform.GetChild(0).gameObject;
+            int area = grandchild.transform.GetComponent<InkCanvas>().GetArea();
+            allArea += area;
+            }
+        }
+        return allArea;
     }
 
     //エネミー数決定
