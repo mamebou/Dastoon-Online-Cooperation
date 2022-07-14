@@ -10,6 +10,8 @@ using Microsoft.MixedReality.SceneUnderstanding;
 public class SimplePun : MonoBehaviourPunCallbacks {
 
     private String playerName;
+    private int TotalArea;
+    [SerializeField] private GameObject parentObject;
     public GameObject stateManager;
     int playerNum;
     bool isStart = false;
@@ -56,7 +58,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
         playerName = CanasController.getPlayerName();
         CountDownText = GameObject.Find("CountDwon").GetComponent<TextMeshPro>();
         SceneUnderstanding = GameObject.Find("SceneUnderstandingManager");
-        scoreText= scoreDisplay.GetComponent<TextMeshPro>();
+        scoreText = scoreDisplay.GetComponent<TextMeshPro>();
         calscore = scoreDisplay.GetComponent<CalScore>();
         dustHander = DustSensor.GetComponent<DustHander>();
         socreGauge = gauge.GetComponent<ScoreGauge>();
@@ -74,6 +76,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
               
               if(CountDown <= 0f){
                   SceneUnderstanding.GetComponent<SceneUnderstandingManager>().DisplayScanPlanes = true;
+                  TotalArea = calscore.GetAllArea();
                   isStart = false;
                   isStarted = true;
                   scoreText.text = "Stage" + stageNum.ToString("F2");

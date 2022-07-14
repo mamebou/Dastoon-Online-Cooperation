@@ -47,6 +47,20 @@ public class CalScore : MonoBehaviour
     {
     }
 
+    public int GetAllArea(){
+        int allArea = 0;
+        int highScore = 0;
+        foreach (Transform childTransform in parentObject.transform)
+        {
+            if(childTransform.gameObject.name=="Floor"){
+            GameObject grandchild = childTransform.transform.GetChild(0).gameObject;
+            int area = grandchild.transform.GetComponent<InkCanvas>().GetArea();
+            allArea += area;
+            }
+        }
+        return allArea;
+    }
+
     public int CalArea(Color myColor)
     {
         //�h��ꂽ�͈͂̌v�Z�B���Ȃ�d����(�v�Z���̓t���[�Y����)

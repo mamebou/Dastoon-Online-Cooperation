@@ -1042,6 +1042,52 @@ namespace Es.InkPainter
 			return diff_count;
 		}
 
+		//plane面積取得
+		//いずれリファクタリングする
+		public int GetArea(){
+			var ps = paintSet[0];
+			int diff_count = 0;
+			if (ps != null)
+			{
+				var renderTexture = ps.paintMainTexture;
+				var newTex = new Texture2D(renderTexture.width, renderTexture.height);
+				RenderTexture.active = renderTexture;
+				newTex.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+				newTex.Apply();
+
+				Texture mainTexture = ps.mainTexture; // Material のメインテクスチャを取得
+				Texture2D texture2D = new Texture2D(mainTexture.width, mainTexture.height, TextureFormat.RGBA32, false);
+
+				RenderTexture currentRT = RenderTexture.active;
+
+				RenderTexture _renderTexture = new RenderTexture(mainTexture.width, mainTexture.height, 32);
+				// mainTexture のピクセル情報を renderTexture にコピー
+				Graphics.Blit(mainTexture, _renderTexture);
+
+				// renderTexture のピクセル情報を元に texture2D のピクセル情報を作成
+				RenderTexture.active = _renderTexture;
+				texture2D.ReadPixels(new Rect(0, 0, _renderTexture.width, _renderTexture.height), 0, 0);
+				texture2D.Apply();
+
+				Color[] origin_pixels = texture2D.GetPixels();//色塗られてない
+
+				RenderTexture.active = currentRT;
+
+				Color[] paintedTex = newTex.GetPixels();//色塗られてる
+				for (int i = 0; i < origin_pixels.Length; i++)
+				{
+					diff_count++;
+				}
+
+				Destroy(_renderTexture);
+				Destroy(newTex);
+				Destroy(texture2D);
+
+				//Debug.Log(diff_count);
+			}
+			return diff_count;
+		}
+
 		#endregion PublicMethod
 
 		#region CustomEditor
