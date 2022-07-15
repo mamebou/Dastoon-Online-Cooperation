@@ -77,6 +77,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
               if(CountDown <= 0f){
                   SceneUnderstanding.GetComponent<SceneUnderstandingManager>().DisplayScanPlanes = true;
                   TotalArea = calscore.GetAllArea();
+
                   isStart = false;
                   isStarted = true;
                   scoreText.text = "Stage" + stageNum.ToString("F2");
@@ -171,6 +172,20 @@ public class SimplePun : MonoBehaviourPunCallbacks {
         else{
             return false;
         }
+    }
+
+    public int GetAllArea(){
+        int allArea = 0;
+        int highScore = 0;
+        foreach (Transform childTransform in parentObject.transform)
+        {
+            if(childTransform.gameObject.name=="Floor"){
+            GameObject grandchild = childTransform.transform.GetChild(0).gameObject;
+            int area = grandchild.transform.GetComponent<InkCanvas>().GetArea();
+            allArea += area;
+            }
+        }
+        return allArea;
     }
 
     //エネミー数決定
