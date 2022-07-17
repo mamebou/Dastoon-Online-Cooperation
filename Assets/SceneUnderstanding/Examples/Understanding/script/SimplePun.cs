@@ -47,6 +47,10 @@ public class SimplePun : MonoBehaviourPunCallbacks {
     private int additionalPoint;
     private int StageTotalScore;
     private int MyStageTotalScore;
+    private bool isGetTotalArea = false;
+    public float enemyHp = 0f;
+    public float nowEnemyHp = 0f;
+    private bool isGetArea = false;
 
 
 
@@ -65,7 +69,6 @@ public class SimplePun : MonoBehaviourPunCallbacks {
     }
 
     void Update(){
-
         //対戦開始判定
         if(isStart){
           if(player.CustomProperties["isReady"] is true && enemy.CustomProperties["isReady"] is true ){
@@ -76,8 +79,6 @@ public class SimplePun : MonoBehaviourPunCallbacks {
               
               if(CountDown <= 0f){
                   SceneUnderstanding.GetComponent<SceneUnderstandingManager>().DisplayScanPlanes = true;
-                  TotalArea = calscore.GetAllArea();
-
                   isStart = false;
                   isStarted = true;
                   scoreText.text = "Stage" + stageNum.ToString("F2");
@@ -87,9 +88,24 @@ public class SimplePun : MonoBehaviourPunCallbacks {
 
         //対戦判定用                    
         if(isStarted){
+            if(!isGetArea){
+                TotalArea = calscore.GetAllArea();
+                if(TotalArea != 0)
+                    isGetArea = true;
+                properties["totalArea"] = TotalArea;
+                player.SetCustomProperties(properties);
+
+            }
             stageTime -= Time.deltaTime;
             CountDownText.text = stageTime.ToString("F2");
             if(stageTime <= 0){
+                if(!isGetTotalArea){
+                    isGetTotalArea = true;
+                    //エネミーの体力を決定
+                    TotalArea += GetPartnerArea();
+                    enemyHp = TotalArea * 0.8f;
+                    nowEnemyHp = enemyHp;
+                }
                 Color myColor = dustHander.SetColor();
                 properties["isVsScore"] = true;
                 properties["StageScore"] = calscore.CalArea(myColor);
@@ -116,6 +132,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
                 MyStageTotalScore = GetMyScore() + additionalPoint;
                 additionalPoint = 0;
                 StageTotalScore = GetMyScore() + GetEnemyScore();
+                nowEnemyHp -= StageTotalScore;
                 totalScore += StageTotalScore;
                 myTotalScore += MyStageTotalScore;
                 //全て0の場合は５０：５０となるよう設定
@@ -133,7 +150,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
                 range = GetRange(0.5f - spaceOccupancy);
                 enemyNum = GetEnemyNum(0.5f - spaceOccupancy);
 
-                socreGauge.UpdateGuage(spaceOccupancy);
+                socreGauge.UpdateGuage(nowEnemyHp/enemyHp);
                 Array.Resize(ref enemys, enemyNum);
                 for(int i = 0; i < enemyNum; i++ ){
                     int num = rand.Next(1,20);
@@ -172,20 +189,6 @@ public class SimplePun : MonoBehaviourPunCallbacks {
         else{
             return false;
         }
-    }
-
-    public int GetAllArea(){
-        int allArea = 0;
-        int highScore = 0;
-        foreach (Transform childTransform in parentObject.transform)
-        {
-            if(childTransform.gameObject.name=="Floor"){
-            GameObject grandchild = childTransform.transform.GetChild(0).gameObject;
-            int area = grandchild.transform.GetComponent<InkCanvas>().GetArea();
-            allArea += area;
-            }
-        }
-        return allArea;
     }
 
     //エネミー数決定
@@ -369,6 +372,10 @@ public class SimplePun : MonoBehaviourPunCallbacks {
 
     public int GetEnemyScore(){
         return (enemy.CustomProperties["StageScore"] is int score) ? score : 0;
+    }
+
+    public int GetPartnerArea(){
+        return (enemy.CustomProperties["totalArea"] is int area) ? area : 0;
     }
 
     public void ResultDisplay(){
