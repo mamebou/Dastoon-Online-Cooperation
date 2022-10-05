@@ -36,4 +36,12 @@ public class ScoreGauge : MonoBehaviour
    public async void UpdateGuage(float value){
         indicator.Progress = value;
     }
+
+    void OnBecameVisible() {
+        Debug.Log("in camera");
+    }
+
+    void OnBecameInvisible() {
+        Debug.Log("out camera");
+    }
 }
