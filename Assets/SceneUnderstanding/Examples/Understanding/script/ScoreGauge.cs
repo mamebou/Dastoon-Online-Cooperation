@@ -30,7 +30,7 @@ public class ScoreGauge : MonoBehaviour
     private async void OpenIndigater(){
         await indicator.OpenAsync();
         indicator.Message = "let's buttle";
-        indicator.Progress = 0.5f;
+        indicator.Progress = 1.0f;
     }
 
    public async void UpdateGuage(float value){
