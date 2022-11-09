@@ -52,6 +52,11 @@ public class SimplePun : MonoBehaviourPunCallbacks {
     public float nowEnemyHp = 0f;
     private bool isGetArea = false;
 
+    //以下テスト用
+    public float waitTime = 3.0f;
+    public bool isConnect = false;
+    public bool isReady = false;
+    public GameObject demoPlayer;
 
 
     ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
@@ -69,6 +74,17 @@ public class SimplePun : MonoBehaviourPunCallbacks {
     }
 
     void Update(){
+        //以下テスト用
+        // if(!isConnect){
+        //     Connect();
+        //     isConnect = true;
+        // }
+        // waitTime -= Time.deltaTime;
+        // if(waitTime<=0 && isConnect && !isReady){
+        //     Ready();
+        //     isReady = true;
+        // }
+        //ここまで
         //対戦開始判定
         if(isStart){
           if(player.CustomProperties["isReady"] is true && enemy.CustomProperties["isReady"] is true ){
@@ -79,6 +95,7 @@ public class SimplePun : MonoBehaviourPunCallbacks {
               
               if(CountDown <= 0f){
                   SceneUnderstanding.GetComponent<SceneUnderstandingManager>().DisplayScanPlanes = true;
+                  demoPlayer.GetComponent<Rigidbody>().useGravity = true;
                   isStart = false;
                   isStarted = true;
                   scoreText.text = "Stage" + stageNum.ToString("F2");
