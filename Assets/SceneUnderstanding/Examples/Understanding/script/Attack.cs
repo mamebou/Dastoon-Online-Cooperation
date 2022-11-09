@@ -22,12 +22,12 @@ public class Attack : MonoBehaviour
         Debug.Log("collision");
         EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
         GameObject collisionObject = collision.gameObject;
-        if(collisionObject.CompareTag("nomal_enemy")){
+        if(collisionObject.CompareTag("nomal_item")){
             pun.AddScore(400);
             Debug.Log("collision normal");
             Destroy(collisionObject);
         }
-        else if(collisionObject.CompareTag("rare_enemy")){
+        else if(collisionObject.CompareTag("rare_item")){
             pun.AddScore(800);
             Debug.Log("collision rare");
             Destroy(collisionObject);
