@@ -33,7 +33,6 @@ public class SimplePun : MonoBehaviourPunCallbacks {
     public int stageNum = 1;
     public GameObject gauge;
     public GameObject lockedEnemyHp;
-    private ScoreGauge lockedEnemyHpGauge;
     private ScoreGauge socreGauge;
     private float compareTime = 2.0f;
     private bool isMyCompare = false;
@@ -74,7 +73,6 @@ public class SimplePun : MonoBehaviourPunCallbacks {
         calscore = scoreDisplay.GetComponent<CalScore>();
         dustHander = DustSensor.GetComponent<DustHander>();
         socreGauge = gauge.GetComponent<ScoreGauge>();
-        lockedEnemyHpGauge = lockedEnemyHp.GetComponent<ScoreGauge>();
     }
 
     void Update(){
