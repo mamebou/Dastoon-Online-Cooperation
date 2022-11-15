@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 9139181169554555590}
   - component: {fileID: 5294895397237558627}
   - component: {fileID: 7971309795730979241}
+  - component: {fileID: -3214742625085433758}
   m_Layer: 0
   m_Name: rear_item
   m_TagString: rare_item
@@ -189,7 +190,7 @@ Transform:
   m_GameObject: {fileID: 8475550708224841852}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -8.958721, y: -2.0277014, z: 8.669617}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9172514329931834181}
   - {fileID: 7710540062198501469}
@@ -245,3 +246,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-3214742625085433758
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475550708224841852}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.01994991, y: 0.1, z: 0.012145751}
+  m_Center: {x: 0, y: 0, z: 0}
